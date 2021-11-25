@@ -17,15 +17,16 @@ target_link_libraries(cyber_routine_factory cyber::common
                                             cyber::perf_event_cache)
 add_library(cyber::routine_factory ALIAS cyber_routine_factory)
 
-if($ENV{CPU} MATCHES "x86")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
 set(SWAP_SRCS detail/swap_x86_64.S)
-elseif($ENV{CPU} MATCHES "k8")
+elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
 set(SWAP_SRCS detail/swap_aarch64.S)
 endif()
+set_property(SOURCE ${SWAP_SRCS} PROPERTY LANGUAGE C)
 
-set(SWAP_SRCS detail/swap_x86_64.S)
-
+#message(FATAL_ERROR ${SWAP_SRCS})
 add_library(cyber_swap ${SWAP_SRCS})
+set_target_properties(cyber_swap PROPERTIES LINKER_LANGUAGE C)
 add_library(cyber::swap ALIAS cyber_swap)
 
 add_library(cyber_croutine croutine.cc)

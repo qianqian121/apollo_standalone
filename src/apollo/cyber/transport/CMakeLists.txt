@@ -26,7 +26,7 @@ target_link_libraries(cyber_message_info cyber::endpoint
 add_library(cyber::transmitter ALIAS cyber_message_info)
 
 add_library(cyber_hybrid_transmitter transmitter/hybrid_transmitter.h)
-set_target_properties(cyber_transmitter PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(cyber_hybrid_transmitter PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(cyber_hybrid_transmitter cyber::transmitter)
 add_library(cyber::hybrid_transmitter ALIAS cyber_hybrid_transmitter)
 

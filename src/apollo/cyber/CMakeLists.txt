@@ -155,3 +155,6 @@ install(TARGETS mainboard
         INCLUDES DESTINATION .
   )
 
+install(FILES setup.bash
+        DESTINATION bin
+        )

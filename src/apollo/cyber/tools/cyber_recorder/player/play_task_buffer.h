@@ -14,58 +14,43 @@
  * limitations under the License.
  *****************************************************************************/
 
-#ifndef CYBER_RECORD_RECORD_MESSAGE_H_
-#define CYBER_RECORD_RECORD_MESSAGE_H_
+#ifndef CYBER_TOOLS_CYBER_RECORDER_PLAYER_PLAY_TASK_BUFFER_H_
+#define CYBER_TOOLS_CYBER_RECORDER_PLAYER_PLAY_TASK_BUFFER_H_
 
 #include <cstdint>
-#include <string>
+#include <map>
+#include <memory>
+#include <mutex>
+
+#include "cyber/tools/cyber_recorder/player/play_task.h"
 
 namespace apollo {
 namespace cyber {
 namespace record {
 
-static constexpr size_t kGB = 1 << 30;
-static constexpr size_t kMB = 1 << 20;
-static constexpr size_t kKB = 1 << 10;
+class PlayTaskBuffer {
+ public:
+  using TaskPtr = std::shared_ptr<PlayTask>;
+  // if all tasks are in order, we can use other container to replace this
+  using TaskMap = std::multimap<uint64_t, TaskPtr>;
 
-/**
- * @brief Basic data struct of record message.
- */
-struct RecordMessage {
-  /**
-   * @brief The constructor.
-   */
-  RecordMessage() {}
+  PlayTaskBuffer();
+  virtual ~PlayTaskBuffer();
 
-  /**
-   * @brief The constructor.
-   *
-   * @param name
-   * @param message
-   * @param msg_time
-   */
-  RecordMessage(const std::string& name, const std::string& message,
-                uint64_t msg_time)
-      : channel_name(name), content(message), time(msg_time) {}
+  size_t Size() const;
+  bool Empty() const;
 
-  /**
-   * @brief The channel name of the message.
-   */
-  std::string channel_name;
+  void Push(const TaskPtr& task);
+  TaskPtr Front();
+  void PopFront();
 
-  /**
-   * @brief The content of the message.
-   */
-  std::string content;
-
-  /**
-   * @brief The time (nanosecond) of the message.
-   */
-  uint64_t time;
+ private:
+  TaskMap tasks_;
+  mutable std::mutex mutex_;
 };
 
 }  // namespace record
 }  // namespace cyber
 }  // namespace apollo
 
-#endif  // CYBER_RECORD_RECORD_READER_H_
+#endif  // CYBER_TOOLS_CYBER_RECORDER_PLAYER_PLAY_TASK_BUFFER_H_

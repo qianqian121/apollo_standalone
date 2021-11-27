@@ -14,58 +14,33 @@
  * limitations under the License.
  *****************************************************************************/
 
-#ifndef CYBER_RECORD_RECORD_MESSAGE_H_
-#define CYBER_RECORD_RECORD_MESSAGE_H_
+#ifndef CYBER_TOOLS_CYBER_RECORDER_PLAYER_PLAY_PARAM_H_
+#define CYBER_TOOLS_CYBER_RECORDER_PLAYER_PLAY_PARAM_H_
 
 #include <cstdint>
+#include <set>
 #include <string>
 
 namespace apollo {
 namespace cyber {
 namespace record {
 
-static constexpr size_t kGB = 1 << 30;
-static constexpr size_t kMB = 1 << 20;
-static constexpr size_t kKB = 1 << 10;
-
-/**
- * @brief Basic data struct of record message.
- */
-struct RecordMessage {
-  /**
-   * @brief The constructor.
-   */
-  RecordMessage() {}
-
-  /**
-   * @brief The constructor.
-   *
-   * @param name
-   * @param message
-   * @param msg_time
-   */
-  RecordMessage(const std::string& name, const std::string& message,
-                uint64_t msg_time)
-      : channel_name(name), content(message), time(msg_time) {}
-
-  /**
-   * @brief The channel name of the message.
-   */
-  std::string channel_name;
-
-  /**
-   * @brief The content of the message.
-   */
-  std::string content;
-
-  /**
-   * @brief The time (nanosecond) of the message.
-   */
-  uint64_t time;
+struct PlayParam {
+  bool is_play_all_channels = false;
+  bool is_loop_playback = false;
+  double play_rate = 1.0;
+  uint64_t begin_time_ns = 0;
+  uint64_t end_time_ns = UINT64_MAX;
+  uint64_t start_time_s = 0;
+  uint64_t delay_time_s = 0;
+  uint32_t preload_time_s = 3;
+  std::set<std::string> files_to_play;
+  std::set<std::string> channels_to_play;
+  std::set<std::string> black_channels;
 };
 
 }  // namespace record
 }  // namespace cyber
 }  // namespace apollo
 
-#endif  // CYBER_RECORD_RECORD_READER_H_
+#endif  // CYBER_TOOLS_CYBER_RECORDER_PLAYER_PLAY_PARAM_H_

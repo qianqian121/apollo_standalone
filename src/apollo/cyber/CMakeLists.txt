@@ -34,6 +34,8 @@ add_subdirectory(service_discovery)
 add_subdirectory(time)
 add_subdirectory(timer)
 add_subdirectory(task)
+add_subdirectory(tools/cyber_monitor)
+add_subdirectory(tools/cyber_recorder)
 add_subdirectory(transport)
 
 add_library(cyber_binary binary.h)

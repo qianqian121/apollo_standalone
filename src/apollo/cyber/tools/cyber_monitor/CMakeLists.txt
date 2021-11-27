@@ -22,12 +22,9 @@ target_link_libraries(cyber_monitor
     cyber::endpoint
     )
 
-file(GLOB HEADERS *.h)
-
-install(FILES ${HEADERS}
-    DESTINATION ${CYBER_INSTALL_INCLUDE_DIR}/cyber/monitor
-    )
-
 install(TARGETS cyber_monitor
-    DESTINATION  ${CYBER_INSTALL_DIR}/bin
-    )
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION .
+        )

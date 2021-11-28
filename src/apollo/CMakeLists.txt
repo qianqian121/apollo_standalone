@@ -28,6 +28,12 @@ find_package(PROJ4 REQUIRED)
 find_package(IPOPT REQUIRED)
 find_package(ADOLC REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core OpenGL Gui Widgets)
+include_directories(${Qt5Core_INCLUDE_DIRS}
+        ${Qt5Gui_INCLUDE_DIRS}
+        ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5OpenGL_INCLUDE_DIRS})
 
 if(ENABLE_CUDA)
   find_package(CUDA REQUIRED)
@@ -58,6 +64,8 @@ add_subdirectory(modules/prediction)
 add_subdirectory(modules/routing)
 add_subdirectory(modules/planning)
 add_subdirectory(modules/dreamview)
+add_subdirectory(modules/drivers)
+add_subdirectory(modules/tools)
 add_subdirectory(third_party/json)
 add_subdirectory(third_party/tf2)
 

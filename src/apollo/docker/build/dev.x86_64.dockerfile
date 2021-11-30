@@ -49,7 +49,7 @@ RUN set -ex \
        x11-apps mesa-utils htop valgrind mc bc net-tools screen iproute2 \
        build-essential libboost-dev libboost-program-options-dev libboost-all-dev \
        libssl-dev libcurl4-openssl-dev \
-       libeigen3-dev uuid-dev \
+       libeigen3-dev uuid-dev libncurses5-dev \
        ffmpeg \
     && apt-get clean \
     && apt-get upgrade
@@ -87,7 +87,9 @@ RUN useradd -ms /bin/bash dev && \
           echo "dev:dev" | chpasswd
 
 # Setup home environment
+RUN cp /opt/apollo/installers/apollo.sh /etc/profile.d/apollo.sh
 RUN chown -R dev:dev /home/dev
+RUN mkdir /apollo && chown -R dev:dev /apollo
 RUN echo "dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Clean history

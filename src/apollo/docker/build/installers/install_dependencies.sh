@@ -4,7 +4,6 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 WORKHORSE="$1"
 
 bash ${CURRENT_DIR}/install_minimal_environment.sh us
-sudo apt install -y libncurses5-dev
 sudo apt update
 sudo apt -y upgrade
 bash ${CURRENT_DIR}/install_curlpp.sh

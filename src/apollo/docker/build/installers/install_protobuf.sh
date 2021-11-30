@@ -49,12 +49,14 @@ mkdir cmake/build && cd cmake/build
 cmake .. \
     -DBUILD_SHARED_LIBS=ON \
     -Dprotobuf_BUILD_TESTS=OFF \
-    -DCMAKE_INSTALL_PREFIX:PATH="/usr" \
+    -DCMAKE_INSTALL_PREFIX:PATH="/usr/local" \
     -DCMAKE_BUILD_TYPE=Release
 
 # ./configure --prefix=/usr
 make -j$(nproc)
 make install
+
+cd ../../src/google/protobuf/stubs && sudo cp -r *.h /usr/local/include/google/protobuf/stubs/ && cd -
 
 ldconfig
 

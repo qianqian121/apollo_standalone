@@ -9,8 +9,8 @@
 
 find_path(adolc_INCLUDE_PATH adolc/adolc.h)
 
-find_library(adolc_LIBRARY libadolc.so PATHS /usr/local/lib64)
-set(adolc_LIBRARY "/usr/local/lib64/libadolc.so")
+find_library(adolc_LIBRARY libadolc.so PATHS /usr/lib/x86_64-linux-gnu)
+set(adolc_LIBRARY "/usr/lib/x86_64-linux-gnu/libadolc.so")
 if(adolc_INCLUDE_PATH AND adolc_LIBRARY)
   set(ADOLC_FOUND TRUE)
 endif(adolc_INCLUDE_PATH AND adolc_LIBRARY)

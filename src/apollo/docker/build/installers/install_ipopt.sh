@@ -1,32 +1,20 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -e # exit on first error
+SOURCE_DIR="/tmp"
 
-###############################################################################
-# Copyright 2018 The Apollo Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-###############################################################################
+install_ipopt()
+{
+    sudo add-apt-repository universe &&  sudo apt-get -y update
+    sudo apt-get install -y libblas-dev liblapack-dev gfortran
+    cd ${SOURCE_DIR}
+    wget https://www.coin-or.org/download/source/Ipopt/Ipopt-3.12.11.zip -O Ipopt-3.12.11.zip
+    unzip Ipopt-3.12.11.zip
+    cd Ipopt-3.12.11/ThirdParty/Mumps
+    bash get.Mumps
+    cd ${SOURCE_DIR}/Ipopt-3.12.11
+    ./configure --prefix /usr/local --disable-shared ADD_CXXFLAGS="-fPIC" ADD_CFLAGS="-fPIC" ADD_FFLAGS="-fPIC"
+    make -j8 all
+    sudo make install
+}
 
-# Fail on first error.
-set -e
-
-cd "$(dirname "${BASH_SOURCE[0]}")"
-. ./installer_base.sh
-
-apt_get_update_and_install \
-    coinor-libipopt-dev
-
-#FIXME(all): dirty hack here.
-sed -i '/#define __IPSMARTPTR_HPP__/a\#define HAVE_CSTDDEF' \
-    /usr/include/coin/IpSmartPtr.hpp
-
-# Source Code Package Link: https://github.com/coin-or/Ipopt/releases
+install_ipopt

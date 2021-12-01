@@ -158,5 +158,9 @@ install(TARGETS mainboard
   )
 
 install(FILES setup.bash
-        DESTINATION bin
+        DESTINATION cyber
+        )
+
+install(FILES tools/cyber_tools_auto_complete.bash
+        DESTINATION cyber/tools
         )

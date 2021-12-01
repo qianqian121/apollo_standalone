@@ -1,10 +1,24 @@
 FROM nvidia/cudagl:10.0-devel-ubuntu18.04
 
+ARG CUDA_LITE=10.0
+ARG CUDNN_VERSION=7.6.5.32
 ARG WORKHORSE="cpu"
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Set default shell to bash
 RUN ln -sf /bin/bash /bin/sh
+
+RUN M="${CUDNN_VERSION%%.*}" \
+    && PATCH="-1+cuda${CUDA_LITE}" \
+    && apt-get -y update \
+    && apt-get install -y --no-install-recommends \
+        libcudnn${M}="${CUDNN_VERSION}${PATCH}" \
+    && apt-mark hold libcudnn${M} \
+    && rm -rf /var/lib/apt/lists/* \
+    && echo "Delete static cuDNN libraries..." \
+    && find /usr/lib/$(uname -m)-linux-gnu -name "libcudnn_*.a" -delete -print
+
+ENV CUDNN_VERSION ${CUDNN_VERSION}
 
 RUN set -ex \
     && apt-get update \
@@ -39,9 +53,6 @@ RUN cd /usr/local/src \
 
 COPY build/installers /opt/apollo/installers
 COPY build/rcfiles /opt/apollo/rcfiles
-
-RUN dpkg -i /opt/apollo/installers/libcudnn7_7.6.5.32-1+cuda10.0_amd64.deb \
-    && rm /opt/apollo/installers/libcudnn7_7.6.5.32-1+cuda10.0_amd64.deb
 
 RUN mkdir -p /opt/apollo/rcfiles /opt/apollo/pkgs /opt/apollo/sysroot
 

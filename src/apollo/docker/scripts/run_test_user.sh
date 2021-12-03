@@ -4,7 +4,7 @@ xhost +local:
 
 export UID=$(id -u)
 export GID=$(id -g)
-docker run --gpus all --privileged -it -e NVIDIA_DRIVER_CAPABILITIES=video,compute,graphics,utility \
+docker run --gpus all --privileged --rm -it -e NVIDIA_DRIVER_CAPABILITIES=video,compute,graphics,utility \
     --user $UID:$GID \
     --workdir="/home/$USER" \
     --volume="/etc/group:/etc/group:ro" \
@@ -14,4 +14,4 @@ docker run --gpus all --privileged -it -e NVIDIA_DRIVER_CAPABILITIES=video,compu
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --net=host --ipc=host --shm-size="2G" \
     -v /home/$(whoami):/mnt \
-    apollo/standalone:dev-x86_64-18.04-cuda10.0-v0.0 bash
+    test/test:v0

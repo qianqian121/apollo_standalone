@@ -83,13 +83,11 @@ RUN set -ex \
     && rm -rf /var/lib/apt/lists/*
 
 # Create user dev
-RUN useradd -ms /bin/bash dev && \
-          echo "dev:dev" | chpasswd
+RUN useradd -rm -d /home/dev -s /bin/bash -g root -G sudo -u 1001 dev
 
 # Setup home environment
 RUN cp /opt/apollo/installers/apollo.sh /etc/profile.d/apollo.sh
-RUN chown -R dev:dev /home/dev
-RUN mkdir /apollo && chown -R dev:dev /apollo
+RUN mkdir /apollo && chown -R dev:root /apollo
 RUN echo "dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Clean history
@@ -99,3 +97,4 @@ RUN rm -rf /root/.bash_history /home/dev/.bash_history
 CMD ["/bin/bash"]
 
 USER dev
+WORKDIR /home/dev

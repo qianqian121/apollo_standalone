@@ -6,5 +6,5 @@ docker run --gpus all --privileged -it -e NVIDIA_DRIVER_CAPABILITIES=video,compu
     --env="DISPLAY" -env="QT_X11_NO_MITSHM=1" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --net=host --ipc=host --shm-size="2G" \
-    -v /home/dev:/mnt \
+    -v /home/$(whoami):/mnt \
     apollo/standalone:dev-x86_64-18.04-cuda10.0-v0.0 bash

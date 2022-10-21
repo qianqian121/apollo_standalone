@@ -81,11 +81,29 @@ RUN bash /opt/apollo/installers/install_dependencies_ipopt_etc.sh "${WORKHORSE}"
 
 RUN bash /opt/apollo/installers/install_dependencies_opencv.sh "${WORKHORSE}"
 
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    python3-setuptools python3-pip python3-venv python3-wheel \
+    cython cython3
+
+# Install Open3D system dependencies and pip
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libgl1 \
+    libgomp1
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    python-apt python3-apt \
+    dbus-x11 \
+    terminator
+RUN sed -i 's/#!\/usr\/bin\/python/#!\/usr\/bin\/python2/' /usr/share/terminator/terminator
+
 RUN set -ex \
     && apt-get update \
     && apt-get clean \
     && apt-get -y upgrade \
     && rm -rf /var/lib/apt/lists/*
+
+# Install lidar puma dependencies
+RUN python3 -m pip install --no-cache-dir --upgrade Click easydict pandas scipy joblib
 
 # Create user dev
 RUN useradd -rm -d /home/dev -s /bin/bash -g root -G sudo -u 1001 dev
@@ -94,6 +112,8 @@ RUN useradd -rm -d /home/dev -s /bin/bash -g root -G sudo -u 1001 dev
 RUN cp /opt/apollo/installers/apollo.sh /etc/profile.d/apollo.sh
 RUN mkdir /apollo && chown -R dev:root /apollo
 RUN echo "dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+RUN chmod 777 /home/dev
 
 # Clean history
 RUN rm -rf /root/.bash_history /home/dev/.bash_history

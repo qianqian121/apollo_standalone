@@ -112,6 +112,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     terminator
 RUN sed -i 's/#!\/usr\/bin\/python/#!\/usr\/bin\/python2/' /usr/share/terminator/terminator
 
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libpcl-dev
+
 RUN set -ex \
     && apt-get update \
     && apt-get clean \

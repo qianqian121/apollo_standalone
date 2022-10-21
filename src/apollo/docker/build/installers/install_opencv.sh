@@ -32,7 +32,10 @@ if [ -z "${WORKHORSE}" ]; then
 fi
 
 # Note(all): opencv_contrib is not required in cpu mode
-BUILD_CONTRIB="no"
+BUILD_CONTRIB="$2"
+if [ -z "${BUILD_CONTRIB}" ]; then
+    BUILD_CONTRIB="no"
+fi
 
 # 1) Install OpenCV via apt
 # apt-get -y update && \

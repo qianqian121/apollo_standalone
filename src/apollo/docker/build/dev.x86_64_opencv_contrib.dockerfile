@@ -75,6 +75,11 @@ COPY build/rcfiles /opt/apollo/rcfiles
 RUN mkdir -p /opt/apollo/rcfiles /opt/apollo/pkgs /opt/apollo/sysroot
 
 RUN bash /opt/apollo/installers/install_dependencies.sh "${WORKHORSE}"
+RUN echo "install glog done"
+
+RUN bash /opt/apollo/installers/install_dependencies_ipopt_etc.sh "${WORKHORSE}"
+
+RUN bash /opt/apollo/installers/install_dependencies_opencv.sh "${WORKHORSE}"
 
 RUN set -ex \
     && apt-get update \

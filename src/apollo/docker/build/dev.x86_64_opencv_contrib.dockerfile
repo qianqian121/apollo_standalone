@@ -90,6 +90,22 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libgl1 \
     libgomp1
 
+# Install Open3D dependencies
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    xorg-dev \
+    libglu1-mesa-dev \
+    python3-dev \
+    libsdl2-dev \
+    libc++-7-dev \
+    libc++abi-7-dev \
+    ninja-build \
+    libxi-dev \
+    libtbb-dev \
+    libosmesa6-dev \
+    libudev-dev \
+    autoconf \
+    libtool
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
     python-apt python3-apt \
     dbus-x11 \
@@ -103,7 +119,9 @@ RUN set -ex \
     && rm -rf /var/lib/apt/lists/*
 
 # Install lidar puma dependencies
-RUN python3 -m pip install --no-cache-dir --upgrade Click easydict pandas scipy joblib
+RUN python3 -m pip install --no-cache-dir --upgrade Click easydict pandas scipy joblib pybind11
+
+RUN /opt/apollo/installers/install_embree.sh
 
 # Create user dev
 RUN useradd -rm -d /home/dev -s /bin/bash -g root -G sudo -u 1001 dev

@@ -41,5 +41,5 @@
 cmake-build-debug/
 
 # build
-build/
+*build*/
 !src/apollo/docker/build/
